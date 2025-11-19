@@ -1,0 +1,19 @@
+name = "cdn-tinycardo"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[env.production]
+name = "cdn-tinycardo"
+
+[env.staging]
+name = "cdn-tinycardo-staging"
+
+# R2 bucket for storing WAV files
+[[r2_buckets]]
+binding = "TTS_BUCKET"
+bucket_name = "tts-wav-files"
+preview_bucket_name = "tts-wav-files-preview"
+
+# Environment variables (set via wrangler secret put or dashboard)
+# SIGNATURE_SECRET - The secret key for HMAC signature verification
+
