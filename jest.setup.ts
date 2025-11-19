@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 // Setup for Jest tests
 // Ensure Web Crypto API is available in Node.js test environment
 import { webcrypto } from "crypto";
@@ -14,5 +15,6 @@ if (typeof globalThis.TextEncoder === "undefined") {
 }
 
 if (typeof globalThis.TextDecoder === "undefined") {
-  globalThis.TextDecoder = TextDecoder;
+  globalThis.TextDecoder =
+    TextDecoder as unknown as typeof globalThis.TextDecoder;
 }
