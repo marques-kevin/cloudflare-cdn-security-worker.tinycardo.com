@@ -1,4 +1,4 @@
-import worker, { verify_signature } from "./old";
+import worker, { verify_signature } from "./index";
 
 describe("verify_signature", () => {
   const secret = "test-secret-key";
