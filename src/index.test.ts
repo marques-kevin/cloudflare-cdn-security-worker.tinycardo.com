@@ -99,10 +99,10 @@ describe("verify_signature", () => {
 
 describe("worker.fetch", () => {
   const mock_env: {
-    TTS_BUCKET: R2Bucket;
+    BUCKET: R2Bucket;
     SIGNATURE_SECRET: string;
   } = {
-    TTS_BUCKET: {} as R2Bucket,
+    BUCKET: {} as R2Bucket,
     SIGNATURE_SECRET: "test-secret",
   };
 
@@ -124,7 +124,7 @@ describe("worker.fetch", () => {
     };
 
     // Mock R2Bucket.get
-    (mock_env.TTS_BUCKET.get as jest.Mock) = jest.fn();
+    (mock_env.BUCKET.get as jest.Mock) = jest.fn();
   });
 
   async function create_signed_url(
@@ -219,7 +219,7 @@ describe("worker.fetch", () => {
       }
     );
 
-    (mock_env.TTS_BUCKET.get as jest.Mock).mockResolvedValue(mock_r2_object);
+    (mock_env.BUCKET.get as jest.Mock).mockResolvedValue(mock_r2_object);
 
     const response = await worker.fetch(request, mock_env);
     expect(response.status).toBe(200);
@@ -242,7 +242,7 @@ describe("worker.fetch", () => {
 
     const request = new Request(signed_url);
 
-    (mock_env.TTS_BUCKET.get as jest.Mock).mockResolvedValue(null);
+    (mock_env.BUCKET.get as jest.Mock).mockResolvedValue(null);
 
     const response = await worker.fetch(request, mock_env);
     expect(response.status).toBe(404);
@@ -255,7 +255,7 @@ describe("worker.fetch", () => {
 
     const request = new Request(signed_url);
 
-    (mock_env.TTS_BUCKET.get as jest.Mock).mockResolvedValue(mock_r2_object);
+    (mock_env.BUCKET.get as jest.Mock).mockResolvedValue(mock_r2_object);
 
     const response = await worker.fetch(request, mock_env);
 
@@ -274,9 +274,7 @@ describe("worker.fetch", () => {
 
     const request = new Request(signed_url);
 
-    (mock_env.TTS_BUCKET.get as jest.Mock).mockRejectedValue(
-      new Error("R2 error")
-    );
+    (mock_env.BUCKET.get as jest.Mock).mockRejectedValue(new Error("R2 error"));
 
     const response = await worker.fetch(request, mock_env);
     expect(response.status).toBe(500);
@@ -289,12 +287,12 @@ describe("worker.fetch", () => {
 
     const request = new Request(signed_url);
 
-    (mock_env.TTS_BUCKET.get as jest.Mock).mockResolvedValue(mock_r2_object);
+    (mock_env.BUCKET.get as jest.Mock).mockResolvedValue(mock_r2_object);
 
     const response = await worker.fetch(request, mock_env);
 
     expect(response.status).toBe(200);
-    expect(mock_env.TTS_BUCKET.get).toHaveBeenCalledWith("audio/test.mp3");
+    expect(mock_env.BUCKET.get).toHaveBeenCalledWith("audio/test.mp3");
   });
 
   it("should handle file path without leading slash", async () => {
@@ -305,11 +303,11 @@ describe("worker.fetch", () => {
 
     const request = new Request(signed_url);
 
-    (mock_env.TTS_BUCKET.get as jest.Mock).mockResolvedValue(mock_r2_object);
+    (mock_env.BUCKET.get as jest.Mock).mockResolvedValue(mock_r2_object);
 
     const response = await worker.fetch(request, mock_env);
 
     expect(response.status).toBe(200);
-    expect(mock_env.TTS_BUCKET.get).toHaveBeenCalledWith("test.mp3");
+    expect(mock_env.BUCKET.get).toHaveBeenCalledWith("test.mp3");
   });
 });

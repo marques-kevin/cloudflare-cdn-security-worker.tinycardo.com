@@ -3,7 +3,7 @@
  */
 
 interface Env {
-  TTS_BUCKET: R2Bucket;
+  BUCKET: R2Bucket;
   SIGNATURE_SECRET: string;
 }
 
@@ -130,7 +130,7 @@ export default {
     }
 
     try {
-      const object = await env.TTS_BUCKET.get(object_key);
+      const object = await env.BUCKET.get(object_key);
 
       if (object === null) {
         return new Response("File not found", { status: 404 });
